@@ -10,10 +10,11 @@
 #include <wincon.h>
 #include <signal.h>
 #include <process.h>
+#include <vector>
 
 using namespace std;
 
-void sendSignal(unsigned long pid, int signal);
+bool sendSignal(unsigned long pid, int signal);
 
 /**
  * NOTE: in C++ argv[0] is equal to the executable's name usually
@@ -24,23 +25,17 @@ int main(int argc, char *argv[])
 {
 	unsigned long pid = stoul(argv[1]);
 	int signal = std::atoi(argv[2]);
-	sendSignal(pid, signal);
+	int r = sendSignal(pid, signal);
+	return (r ? 0 : -1);//if we failed return negative 1
 }
 
 /**
  * do not call this on the same process it's internal
  */
-void sendSignal(unsigned long pid, int signal)
+bool sendSignal(unsigned long pid, int signal)
 {
-	//SIGKILL is always 9
-	if(signal == 9)
-	{
-		const auto explorer = OpenProcess(PROCESS_TERMINATE, false, pid);
-		TerminateProcess(explorer, 1);
-		CloseHandle(explorer);
-		return;
-	}
     FreeConsole();
 	AttachConsole(pid);
-    GenerateConsoleCtrlEvent((signal == CTRL_BREAK_EVENT || signal == SIGBREAK) ? CTRL_BREAK_EVENT : CTRL_C_EVENT, 0);
+	SetConsoleCtrlHandler(NULL, true);//disables CONTROL+C for our process so we don't accidently close ourselves
+    return GenerateConsoleCtrlEvent((signal == CTRL_BREAK_EVENT || signal == SIGBREAK) ? CTRL_BREAK_EVENT : CTRL_C_EVENT, 0);
 }
