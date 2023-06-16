@@ -3,6 +3,6 @@
  
  PID = process id
  CODE = SIGINT, CTRL_C_EVENT, SIGTERM, CONTROL_BREAK_EVENT
-```
-WINSIG.exe "PID" "<CODE>"
-```
+ ```
+ WINSIG.exe "PID" "<CODE>"
+ ```
