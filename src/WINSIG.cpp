@@ -2,13 +2,14 @@
 // Name        : WINSIG.cpp
 // Author      : jredfox
 // Version     : 1.0.0
-// Description : Send a CONTROL+C or CONTROL+BREAK or SIGKILL to any CLI APP
+// Description : Send a CONTROL+C(SIGINT(2) or 0) or CONTROL+BREAK(1) signal to the CLI Process Group
 //============================================================================
 
 #include <iostream>
 #include <windows.h>
 #include <wincon.h>
 #include <signal.h>
+#include <process.h>
 
 using namespace std;
 
@@ -40,5 +41,5 @@ void sendSignal(unsigned long pid, int signal)
 	}
     FreeConsole();
 	AttachConsole(pid);
-    GenerateConsoleCtrlEvent((signal == SIGINT || signal == CTRL_C_EVENT) ? CTRL_C_EVENT : CTRL_BREAK_EVENT, 0);
+    GenerateConsoleCtrlEvent(signal == CTRL_BREAK_EVENT ? CTRL_BREAK_EVENT : CTRL_C_EVENT, 0);
 }
