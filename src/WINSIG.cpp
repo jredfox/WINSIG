@@ -16,8 +16,9 @@ using namespace std;
 void sendSignal(unsigned long pid, int signal);
 
 /**
- * argv[0] unsigned long PID
- * argv[1] int SIGNAL
+ * NOTE: in C++ argv[0] is equal to the executable's name usually
+ * argv[1] unsigned long PID
+ * argv[2] int SIGNAL
  */
 int main(int argc, char *argv[])
 {
@@ -41,5 +42,5 @@ void sendSignal(unsigned long pid, int signal)
 	}
     FreeConsole();
 	AttachConsole(pid);
-    GenerateConsoleCtrlEvent(signal == CTRL_BREAK_EVENT ? CTRL_BREAK_EVENT : CTRL_C_EVENT, 0);
+    GenerateConsoleCtrlEvent((signal == CTRL_BREAK_EVENT || signal == SIGBREAK) ? CTRL_BREAK_EVENT : CTRL_C_EVENT, 0);
 }
