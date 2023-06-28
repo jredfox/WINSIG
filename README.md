@@ -5,4 +5,5 @@
  ```
  WINSIG.exe "PID" "<CODE>"
  ```
-  CODE as an **Unsigned Long INTEGER** = SIGINT, CTRL_C_EVENT, SIGTERM, CONTROL_BREAK_EVENT
+PID = DWORD(unsigned long) `process id`  
+CODE = int signal `SIGINT, CTRL_C_EVENT, SIGTERM, CONTROL_BREAK_EVENT`
